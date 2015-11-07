@@ -18,6 +18,7 @@
 
 package fr.fanaen.eclat.model.sparkle;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -38,14 +39,18 @@ public class SparkleRoundRainbow extends SparkleRound {
 
     @Override
     public void draw(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;    
+        Graphics2D g2 = (Graphics2D) g;
+        
+        float hue = (float)age / 30000.0f;
+        float saturation = 1.0f; 
+        float brightness = 1.0f;
         
         // Anti-alias --
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
                 RenderingHints.VALUE_ANTIALIAS_ON);
         
         // Primary Round --
-        g2.setColor(colorPrimary);
+        g2.setColor(Color.getHSBColor(hue, saturation, brightness));
         g2.fillOval(origin.x - (size.width/2), origin.y - (size.height/2), size.width, size.height);
     }
     

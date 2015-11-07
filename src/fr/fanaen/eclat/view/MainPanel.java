@@ -180,7 +180,6 @@ public class MainPanel extends javax.swing.JPanel implements Runnable {
     }//GEN-LAST:event_formComponentResized
 
     private void formMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseMoved
-        //System.out.println("Moved");
         cursorSparkle.setOrigin(evt.getPoint());
     }//GEN-LAST:event_formMouseMoved
 
