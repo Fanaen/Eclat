@@ -120,7 +120,7 @@ public class FactoryController implements TimeController.Listener, KeyboardContr
         }
     }
 
-    private void newSparkle(Sparkle sparkle) {
+    public void newSparkle(Sparkle sparkle) {
         int diversity = keyboardController.getDiversity();
         float hue = 0;
         

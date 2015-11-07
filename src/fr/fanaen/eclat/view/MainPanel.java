@@ -22,7 +22,12 @@ import fr.fanaen.eclat.controller.DrawController;
 import fr.fanaen.eclat.controller.FactoryController;
 import fr.fanaen.eclat.controller.KeyboardController;
 import fr.fanaen.eclat.controller.TimeController;
+import fr.fanaen.eclat.model.sparkle.SparkleRoundRainbow;
+import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +60,8 @@ public class MainPanel extends javax.swing.JPanel implements Runnable {
     protected long timeClicked = 0;
     protected boolean fullscreen = false;
     
+    protected SparkleRoundRainbow cursorSparkle = null;
+    
     // -- Constructors --
     
     public MainPanel() {
@@ -74,6 +81,23 @@ public class MainPanel extends javax.swing.JPanel implements Runnable {
         keyboardController.addListener(factoryController);
         
         initComponents();
+        
+        // Cursor system (optional) --
+        boolean cursorMode = true;
+        if(cursorMode) {
+            cursorSparkle = new SparkleRoundRainbow();
+            factoryController.newSparkle(cursorSparkle);
+            
+            // Transparent 16 x 16 pixel cursor image.
+            BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+
+            // Create a new blank cursor.
+            Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+                cursorImg, new Point(0, 0), "blank cursor");
+
+            // Set the blank cursor to the JFrame.
+            this.setCursor(blankCursor);
+        }        
         
     }
 
@@ -95,6 +119,11 @@ public class MainPanel extends javax.swing.JPanel implements Runnable {
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 formComponentResized(evt);
+            }
+        });
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                formMouseMoved(evt);
             }
         });
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -149,6 +178,11 @@ public class MainPanel extends javax.swing.JPanel implements Runnable {
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         onResized();
     }//GEN-LAST:event_formComponentResized
+
+    private void formMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseMoved
+        //System.out.println("Moved");
+        cursorSparkle.setOrigin(evt.getPoint());
+    }//GEN-LAST:event_formMouseMoved
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
