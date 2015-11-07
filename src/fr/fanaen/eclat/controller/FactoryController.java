@@ -47,6 +47,11 @@ public class FactoryController implements TimeController.Listener, KeyboardContr
         listListener.add(listener);
     }
     
+    // -- Waiting mode (optional) --
+    
+    protected boolean waitingForInputMode;
+    protected boolean waiting;
+    
     // -- Fields --
     
     protected long timeSinceOrigin;
@@ -62,14 +67,29 @@ public class FactoryController implements TimeController.Listener, KeyboardContr
     protected int offsetX = -10;
     protected int offsetY = -10;
     
+    
+    
     // -- Constructors --
     
     public FactoryController()
     {
         timeSinceOrigin = 0;
         timeNextSparkle = 1000;
+        waiting = false;
         
         random = RandomHelper.getSingleton();
+        
+    }
+    
+    public FactoryController(boolean waitingForInput) 
+    {
+        this();
+        waitingForInputMode = waitingForInput;
+        
+        if(waitingForInputMode) {
+            timeNextSparkle = 0;
+        }
+        
     }
     
     // -- Methods --
@@ -78,13 +98,25 @@ public class FactoryController implements TimeController.Listener, KeyboardContr
     public void onTimeDiffChanged(long timeDiff) {
         timeSinceOrigin += timeDiff;
         
-        if(timeSinceOrigin > timeNextSparkle) {
-            // Compute time before next sparkle : 1000-4000 ms. 
-            int count = keyboardController.getCount() + 1;
-            long nextSparkle = (long) (3000 * (1 / (count * count)));
-            
-            timeNextSparkle = timeSinceOrigin + 1000 + nextSparkle;
-            newSparkle(new SparklePlusSimple());
+        if(waitingForInputMode) { // Waiting mode --
+            if(keyboardController.getCount() > 1 && timeSinceOrigin > timeNextSparkle) {
+                // Compute time before next sparkle : 1000-4000 ms. 
+                int count = keyboardController.getCount() + 1;
+                long nextSparkle = (long) (1000 * (1 / (count * count)));
+
+                timeNextSparkle = timeSinceOrigin + 200 + nextSparkle;
+                newSparkle(new SparklePlusSimple());
+            }
+        }
+        else { // Standard mode --
+            if(timeSinceOrigin > timeNextSparkle) {
+                // Compute time before next sparkle : 1000-4000 ms. 
+                int count = keyboardController.getCount() + 1;
+                long nextSparkle = (long) (3000 * (1 / (count * count)));
+
+                timeNextSparkle = timeSinceOrigin + 1000 + nextSparkle;
+                newSparkle(new SparklePlusSimple());
+            }
         }
     }
 

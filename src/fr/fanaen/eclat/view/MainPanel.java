@@ -62,7 +62,7 @@ public class MainPanel extends javax.swing.JPanel implements Runnable {
         
         timeController = new TimeController();
         drawController = new DrawController();
-        factoryController = new FactoryController();
+        factoryController = new FactoryController(true);
         keyboardController = new KeyboardController();
         
         timeController.addListener(factoryController);
