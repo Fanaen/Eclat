@@ -88,10 +88,10 @@ public class KeyboardController implements TimeController.Listener {
         // Event for first touch --
         if(first) {
             first = false;
-            for(Listener listener : listListener) listener.onExtraSparkle();
+            extraSparkle();
         }
         else if(random.getRandomInt() % 50 == 1) { // 2 % chances of generating extra sparkle --
-            for(Listener listener : listListener) listener.onExtraSparkle();
+            extraSparkle();
         }
     }
 
@@ -105,6 +105,10 @@ public class KeyboardController implements TimeController.Listener {
     
     public int getDiversity() {
         return countDiversity;
+    }
+
+    public void extraSparkle() {
+        for(Listener listener : listListener) listener.onExtraSparkle();
     }
     
     // -- Events --

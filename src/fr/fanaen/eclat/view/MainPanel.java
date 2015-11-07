@@ -160,7 +160,11 @@ public class MainPanel extends javax.swing.JPanel implements Runnable {
             fullscreen = !fullscreen;
             for(Listener listener : listListener) listener.onSwitchFullscreen(fullscreen);
         }
-            
+        
+        // Cursor mode --
+        if(cursorSparkle != null) {
+            keyboardController.extraSparkle();
+        }            
     }//GEN-LAST:event_formMouseClicked
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
